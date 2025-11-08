@@ -1,1 +1,129 @@
-# aws-rds-api
+🪐 Integração AWS, Docker, Python e CoinMarketCap API
+
+
+
+
+
+
+
+
+
+
+
+
+Este projeto foi desenvolvido como parte da Aula 08 do Bootcamp de Cloud e AWS, com o objetivo de construir uma arquitetura completa na AWS, utilizando EC2, RDS (PostgreSQL), Docker e Python para consumir a API do CoinMarketCap e armazenar automaticamente os dados coletados.
+
+🚀 Visão Geral do Projeto
+
+A aplicação realiza requisições à API do CoinMarketCap para capturar informações sobre criptomoedas e persistir os dados em um banco de dados PostgreSQL hospedado no Amazon RDS.
+
+Toda a estrutura foi configurada dentro de uma VPC (Virtual Private Cloud), contendo:
+
+Uma sub-rede pública para a instância EC2, onde roda o container Docker com o script Python.
+
+Uma sub-rede privada para o RDS PostgreSQL, acessível apenas pela instância EC2.
+
+Grupos de segurança independentes, garantindo isolamento e segurança entre os recursos.
+
+🧩 Arquitetura
+API CoinMarketCap → (request)
+       ↓
+Instância EC2 → Docker → Script Python
+       ↓
+Amazon RDS (PostgreSQL) → Armazena os dados coletados
+
+
+Fluxo da aplicação:
+
+A aplicação Python, hospedada na instância EC2, envia uma requisição (request) para a API do CoinMarketCap.
+
+A resposta (response) com os dados das criptomoedas é processada pelo código Python.
+
+Os dados são armazenados no banco PostgreSQL no Amazon RDS.
+
+O scheduler do Python executa as requisições a cada 5 segundos, simulando uma coleta contínua.
+
+⚙️ Tecnologias Utilizadas
+Categoria	Tecnologias
+Cloud	AWS EC2, AWS RDS, AWS VPC
+Linguagem	Python 🐍
+Containers	Docker
+Banco de Dados	PostgreSQL
+Gerenciamento de Variáveis	python-dotenv
+Fonte de Dados	CoinMarketCap API
+🧠 Estrutura do Projeto
+aws-rds-api/
+├── src/
+│   ├── main.py              # Script principal com ETL e integração com a API
+│   ├── db_connection.py     # Funções de conexão e persistência no PostgreSQL
+│   ├── scheduler.py         # Agendador de execuções periódicas
+│   └── utils/
+│       └── helpers.py       # Funções auxiliares
+├── Dockerfile               # Configuração do container Docker
+├── requirements.txt         # Dependências do projeto
+├── .env.example             # Exemplo de variáveis de ambiente
+└── README.md                # Documentação do projeto
+
+🧾 Variáveis de Ambiente
+
+Crie um arquivo .env na raiz do projeto com as seguintes variáveis:
+
+CMC_API_KEY=your_coinmarketcap_api_key
+DB_HOST=your_rds_endpoint
+DB_NAME=your_database_name
+DB_USER=your_database_user
+DB_PASSWORD=your_database_password
+DB_PORT=5432
+
+
+⚠️ Importante: nunca compartilhe o arquivo .env publicamente. Ele contém credenciais sensíveis.
+
+🧰 Como Executar o Projeto Localmente
+1️⃣ Clonar o repositório
+git clone https://github.com/Matheus-ESW/aws-rds-api.git
+
+2️⃣ Acessar o diretório do projeto
+cd aws-rds-api
+
+3️⃣ Criar o arquivo .env
+
+Copie o modelo e preencha suas credenciais:
+
+cp .env.example .env
+
+4️⃣ Criar e ativar o ambiente virtual (opcional, se for rodar sem Docker)
+python -m venv venv
+source venv/bin/activate  # Linux / Mac
+venv\Scripts\activate     # Windows
+
+5️⃣ Instalar dependências
+pip install -r requirements.txt
+
+6️⃣ Executar o projeto
+python src/main.py
+
+🐳 Executando com Docker
+1️⃣ Build da imagem
+docker build -t aws-rds-api .
+
+2️⃣ Execução do container
+docker run --env-file .env aws-rds-api
+
+📈 Resultado Final
+
+O resultado é uma arquitetura completa, segura e escalável, integrando:
+
+AWS (EC2 + RDS) + Docker + Python + API CoinMarketCap
+
+Essa estrutura representa um exemplo prático de engenharia de dados aplicada à nuvem, demonstrando como construir pipelines automatizados e persistentes para coleta de informações em tempo real.
+
+🔗 Repositório
+
+👉 https://github.com/Matheus-ESW/aws-rds-api
+
+✨ Autor
+
+Matheus Ramos
+Analista e entusiasta de Engenharia de Dados
+📍 Jornada de Dados — Bootcamp Cloud & AWS
+💼 LinkedIn
