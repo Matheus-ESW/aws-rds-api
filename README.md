@@ -1,4 +1,4 @@
-🪐 Integração AWS, Docker, Python e CoinMarketCap API
+Integração AWS, Docker, Python e CoinMarketCap API
 
 
 
@@ -11,60 +11,58 @@
 
 
 
-Este projeto foi desenvolvido como parte da Aula 08 do Bootcamp de Cloud e AWS, com o objetivo de construir uma arquitetura completa na AWS, utilizando EC2, RDS (PostgreSQL), Docker e Python para consumir a API do CoinMarketCap e armazenar automaticamente os dados coletados.
+Projeto desenvolvido na Aula 08 do Bootcamp de Cloud e AWS, com o objetivo de construir uma arquitetura completa na AWS, utilizando EC2, RDS (PostgreSQL), Docker e Python para consumir a API do CoinMarketCap e armazenar automaticamente os dados coletados.
 
-🚀 Visão Geral do Projeto
+Visão Geral do Projeto
 
-A aplicação realiza requisições à API do CoinMarketCap para capturar informações sobre criptomoedas e persistir os dados em um banco de dados PostgreSQL hospedado no Amazon RDS.
+A aplicação realiza requisições à API do CoinMarketCap para capturar informações sobre criptomoedas e persistir os dados em um banco PostgreSQL hospedado no Amazon RDS.
 
-Toda a estrutura foi configurada dentro de uma VPC (Virtual Private Cloud), contendo:
+A infraestrutura foi construída dentro de uma VPC (Virtual Private Cloud) com:
 
-Uma sub-rede pública para a instância EC2, onde roda o container Docker com o script Python.
+Uma sub-rede pública para a instância EC2 (container Docker com aplicação Python).
 
-Uma sub-rede privada para o RDS PostgreSQL, acessível apenas pela instância EC2.
+Uma sub-rede privada para o RDS PostgreSQL.
 
-Grupos de segurança independentes, garantindo isolamento e segurança entre os recursos.
+Grupos de segurança independentes para cada recurso.
 
-🧩 Arquitetura
-API CoinMarketCap → (request)
-       ↓
-Instância EC2 → Docker → Script Python
-       ↓
-Amazon RDS (PostgreSQL) → Armazena os dados coletados
+Arquitetura
+API CoinMarketCap (Request)
+          ↓
+Amazon EC2 → Docker → Aplicação Python
+          ↓
+Amazon RDS (PostgreSQL)
 
 
-Fluxo da aplicação:
+Fluxo resumido:
 
-A aplicação Python, hospedada na instância EC2, envia uma requisição (request) para a API do CoinMarketCap.
+A aplicação Python, em execução na EC2, realiza chamadas à API do CoinMarketCap.
 
-A resposta (response) com os dados das criptomoedas é processada pelo código Python.
+Os dados retornados são processados e inseridos no PostgreSQL no Amazon RDS.
 
-Os dados são armazenados no banco PostgreSQL no Amazon RDS.
+Um scheduler em Python executa novas coletas a cada 5 segundos, mantendo o processo contínuo.
 
-O scheduler do Python executa as requisições a cada 5 segundos, simulando uma coleta contínua.
-
-⚙️ Tecnologias Utilizadas
+Tecnologias Utilizadas
 Categoria	Tecnologias
 Cloud	AWS EC2, AWS RDS, AWS VPC
-Linguagem	Python 🐍
+Linguagem	Python
 Containers	Docker
 Banco de Dados	PostgreSQL
 Gerenciamento de Variáveis	python-dotenv
 Fonte de Dados	CoinMarketCap API
-🧠 Estrutura do Projeto
+Estrutura do Projeto
 aws-rds-api/
 ├── src/
-│   ├── main.py              # Script principal com ETL e integração com a API
-│   ├── db_connection.py     # Funções de conexão e persistência no PostgreSQL
+│   ├── main.py              # Script principal com integração e ETL
+│   ├── db_connection.py     # Conexão e persistência no PostgreSQL
 │   ├── scheduler.py         # Agendador de execuções periódicas
 │   └── utils/
 │       └── helpers.py       # Funções auxiliares
-├── Dockerfile               # Configuração do container Docker
+├── Dockerfile               # Configuração do container
 ├── requirements.txt         # Dependências do projeto
-├── .env.example             # Exemplo de variáveis de ambiente
-└── README.md                # Documentação do projeto
+├── .env.example             # Modelo de variáveis de ambiente
+└── README.md                # Documentação
 
-🧾 Variáveis de Ambiente
+Variáveis de Ambiente
 
 Crie um arquivo .env na raiz do projeto com as seguintes variáveis:
 
@@ -76,54 +74,54 @@ DB_PASSWORD=your_database_password
 DB_PORT=5432
 
 
-⚠️ Importante: nunca compartilhe o arquivo .env publicamente. Ele contém credenciais sensíveis.
+Atenção: o arquivo .env não deve ser versionado ou compartilhado publicamente.
 
-🧰 Como Executar o Projeto Localmente
-1️⃣ Clonar o repositório
+Como Executar o Projeto Localmente
+1. Clonar o repositório
 git clone https://github.com/Matheus-ESW/aws-rds-api.git
 
-2️⃣ Acessar o diretório do projeto
+2. Acessar o diretório
 cd aws-rds-api
 
-3️⃣ Criar o arquivo .env
-
-Copie o modelo e preencha suas credenciais:
-
+3. Criar o arquivo .env
 cp .env.example .env
 
-4️⃣ Criar e ativar o ambiente virtual (opcional, se for rodar sem Docker)
-python -m venv venv
-source venv/bin/activate  # Linux / Mac
-venv\Scripts\activate     # Windows
 
-5️⃣ Instalar dependências
+Preencha com suas credenciais da API CoinMarketCap e do banco RDS.
+
+4. Criar ambiente virtual (opcional, se rodar sem Docker)
+python -m venv venv
+source venv/bin/activate   # Linux/Mac
+venv\Scripts\activate      # Windows
+
+5. Instalar dependências
 pip install -r requirements.txt
 
-6️⃣ Executar o projeto
+6. Executar o projeto
 python src/main.py
 
-🐳 Executando com Docker
-1️⃣ Build da imagem
+Executando com Docker
+1. Build da imagem
 docker build -t aws-rds-api .
 
-2️⃣ Execução do container
+2. Execução do container
 docker run --env-file .env aws-rds-api
 
-📈 Resultado Final
+Resultado Final
 
-O resultado é uma arquitetura completa, segura e escalável, integrando:
+Arquitetura completa, segura e escalável, unindo:
 
 AWS (EC2 + RDS) + Docker + Python + API CoinMarketCap
 
-Essa estrutura representa um exemplo prático de engenharia de dados aplicada à nuvem, demonstrando como construir pipelines automatizados e persistentes para coleta de informações em tempo real.
+Essa solução demonstra, na prática, como integrar nuvem, contêineres e dados para criar pipelines modernos de engenharia de dados.
 
-🔗 Repositório
+Repositório
 
-👉 https://github.com/Matheus-ESW/aws-rds-api
+🔗 https://github.com/Matheus-ESW/aws-rds-api
 
-✨ Autor
+Autor
 
 Matheus Ramos
 Analista e entusiasta de Engenharia de Dados
 📍 Jornada de Dados — Bootcamp Cloud & AWS
-💼 LinkedIn
+🔗 LinkedIn
