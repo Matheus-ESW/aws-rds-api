@@ -2,7 +2,7 @@
 FROM python:3.12.1
 
 # Definir o diretório de trabalho
-WORKDIR /app
+WORKDIR /aws-rds-api
 
 # Copiar o arquivo requirements.txt para o container
 COPY requirements.txt .
