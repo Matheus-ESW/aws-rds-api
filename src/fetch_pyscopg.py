@@ -129,11 +129,11 @@ def consultar_cotacao_bitcoin():
 # Criar a tabela no banco de dados
 criar_tabela()
 
-schedule.every(15).seconds.do(consultar_cotacao_bitcoin)
+schedule.every(5).seconds.do(consultar_cotacao_bitcoin)
 
 # Loop principal para manter o agendamento ativo
 if __name__ == "__main__":
-    print("Iniciando o agendamento para consultar a API a cada 15 segundos..")
+    print("Iniciando o agendamento para consultar a API a cada 5 segundos..")
     while True:
         schedule.run_pending()
         time.sleep(1)
