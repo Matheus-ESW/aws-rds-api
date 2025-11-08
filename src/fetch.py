@@ -3,7 +3,6 @@ from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
 from dotenv import load_dotenv
 import json
 import os
-from pprint import pprint
 
 load_dotenv()
 
