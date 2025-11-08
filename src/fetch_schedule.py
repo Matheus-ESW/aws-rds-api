@@ -43,8 +43,6 @@ def persist_data_csv():
 
     print("Linha adicionada ao CSV!")
             
-
-
 def consultar_cotacao_bitcoin():
 
     try:
