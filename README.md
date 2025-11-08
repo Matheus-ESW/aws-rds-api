@@ -1,12 +1,5 @@
 # Integração AWS, Docker, Python e CoinMarketCap API
 
-![Python](https://img.shields.io/badge/Python-3.10-blue.svg)
-![AWS](https://img.shields.io/badge/AWS-Cloud-orange.svg)
-![Docker](https://img.shields.io/badge/Docker-Enabled-blue.svg)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-blue.svg)
-![License](https://img.shields.io/badge/License-MIT-green.svg)
-![Status](https://img.shields.io/badge/Status-Em%20Desenvolvimento-yellow.svg)
-
 Projeto desenvolvido na **Aula 08 do Bootcamp de Cloud e AWS**, com o objetivo de construir uma arquitetura completa na **AWS**, utilizando **EC2**, **RDS (PostgreSQL)**, **Docker** e **Python** para consumir a **API do CoinMarketCap** e armazenar automaticamente os dados coletados.
 
 ---
@@ -53,41 +46,6 @@ Fluxo resumido:
 
 ---
 
-## Estrutura do Projeto
-
-```
-aws-rds-api/
-├── src/
-│   ├── main.py              # Script principal com integração e ETL
-│   ├── db_connection.py     # Conexão e persistência no PostgreSQL
-│   ├── scheduler.py         # Agendador de execuções periódicas
-│   └── utils/
-│       └── helpers.py       # Funções auxiliares
-├── Dockerfile               # Configuração do container
-├── requirements.txt         # Dependências do projeto
-├── .env.example             # Modelo de variáveis de ambiente
-└── README.md                # Documentação
-```
-
----
-
-## Variáveis de Ambiente
-
-Crie um arquivo `.env` na raiz do projeto com as seguintes variáveis:
-
-```
-CMC_API_KEY=your_coinmarketcap_api_key
-DB_HOST=your_rds_endpoint
-DB_NAME=your_database_name
-DB_USER=your_database_user
-DB_PASSWORD=your_database_password
-DB_PORT=5432
-```
-
-> **Atenção:** o arquivo `.env` não deve ser versionado ou compartilhado publicamente.
-
----
-
 ## Como Executar o Projeto Localmente
 
 ### 1. Clonar o repositório
@@ -96,57 +54,24 @@ DB_PORT=5432
 git clone https://github.com/Matheus-ESW/aws-rds-api.git
 ```
 
-### 2. Acessar o diretório
+### 2. Acessar o diretório e construir a imagem Docker
 
 ```bash
 cd aws-rds-api
+sudo docker build -t api-schedule-app .
 ```
 
-### 3. Criar o arquivo `.env`
+### 3. Execute o contêiner com as variáveis de ambiente para integração com o RDS
 
 ```bash
-cp .env.example .env
+sudo docker run -d \
+--name api-schedule-app-container \
+-e DB_HOST=<endereco-rds> \
+-e DB_USER=<usuario> \
+-e DB_PASS=<senha> \
+-e DB_NAME=<nome-do-banco> \
+api-schedule-app
 ```
-
-Preencha com suas credenciais da API CoinMarketCap e do banco RDS.
-
-### 4. Criar ambiente virtual (opcional, se rodar sem Docker)
-
-```bash
-python -m venv venv
-source venv/bin/activate   # Linux/Mac
-venv\Scripts\activate      # Windows
-```
-
-### 5. Instalar dependências
-
-```bash
-pip install -r requirements.txt
-```
-
-### 6. Executar o projeto
-
-```bash
-python src/main.py
-```
-
----
-
-## Executando com Docker
-
-### 1. Build da imagem
-
-```bash
-docker build -t aws-rds-api .
-```
-
-### 2. Execução do container
-
-```bash
-docker run --env-file .env aws-rds-api
-```
-
----
 
 ## Resultado Final
 
@@ -167,6 +92,5 @@ Essa solução demonstra, na prática, como integrar **nuvem, contêineres e dad
 ## Autor
 
 **Matheus Ramos**  
-Analista e entusiasta de Engenharia de Dados  
-📍 Jornada de Dados — Bootcamp Cloud & AWS  
+Analista de Banco de Dados e entusiasta de Engenharia de Dados   
 🔗 [LinkedIn](https://www.linkedin.com/in/matheussoaresramos/)
