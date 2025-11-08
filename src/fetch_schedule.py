@@ -24,6 +24,27 @@ headers = {
 session = Session()
 session.headers.update(headers)
 
+def persist_data_csv():
+
+    csv_path = "csv_data/bitcoin.csv"
+
+    # Verifica se já existe (para decidir se escreve o cabeçalho)
+    arquivo_existe = os.path.exists(csv_path)
+
+    with open(csv_path, "a", newline="", encoding="utf-8") as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=brl_quote.keys())
+
+        # Se o arquivo não existia, escreve o cabeçalho
+        if not arquivo_existe:
+            writer.writeheader()
+
+        # Escreve uma linha com os dados da cotação
+        writer.writerow(brl_quote)
+
+    print("Linha adicionada ao CSV!")
+            
+
+
 def consultar_cotacao_bitcoin():
 
     try:
@@ -40,22 +61,7 @@ def consultar_cotacao_bitcoin():
             print(f"Market Cap: ${brl_quote["market_cap"]:.2f} BRL")
             print(f"Última atualização: {brl_quote["last_updated"]}")
 
-            csv_path = "csv_data/bitcoin.csv"
-
-            # Verifica se já existe (para decidir se escreve o cabeçalho)
-            arquivo_existe = os.path.exists(csv_path)
-
-            with open(csv_path, "a", newline="", encoding="utf-8") as csvfile:
-                writer = csv.DictWriter(csvfile, fieldnames=brl_quote.keys())
-
-                # Se o arquivo não existia, escreve o cabeçalho
-                if not arquivo_existe:
-                    writer.writeheader()
-
-                # Escreve uma linha com os dados da cotação
-                writer.writerow(brl_quote)
-
-            print("Linha adicionada ao CSV!")
+            persist_data_csv()
 
         else:
             print("Erro ao obter a cotação do Bitcoin: ", data['status'].get('error_message', 'Erro desconhecido'))
